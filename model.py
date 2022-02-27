@@ -1,8 +1,8 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
+import pickle
 df = pd.read_csv("StudentsPerformance.csv")
-df
 categorical_cols = df.select_dtypes(include='object').columns
 categorical_cols
 Index(['gender', 'race/ethnicity', 'parental level of education', 'lunch',
@@ -46,10 +46,7 @@ dflevel = {
 df['parental level of education']=df['parental level of education'].map(level)
 dfdf = pd.get_dummies(df,drop_first=True)
 dfx = df.drop(columns='average_score').values
-x
-x[0]
 y = df['average_score'].values
-y
 from sklearn.model_selection import train_test_split
 x_train,x_test,y_train,y_test=train_test_split(x,y,test_size=0.25,random_state=0)
 from sklearn.ensemble import RandomForestRegressor
@@ -61,6 +58,5 @@ predictions
 from sklearn.metrics import r2_score
 print(r2_score(predictions,y_test))
 0.9972615591014802
-import pickle
 pickle.dump(model,open('df.pkl','wb'))
 
