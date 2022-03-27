@@ -1,61 +1,187 @@
+from sklearn.svm import SVC, LinearSVC
+from sklearn.preprocessing import MinMaxScaler
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.naive_bayes import GaussianNB
+from sklearn.externals import joblib
+import numpy as np
 import pandas as pd
-import matplotlib.pyplot as plt
-import seaborn as sns
 import pickle
-df = pd.read_csv("StudentsPerformance.csv")
-categorical_cols = df.select_dtypes(include='object').columns
-categorical_cols
-Index(['gender', 'race/ethnicity', 'parental level of education', 'lunch',
-       'test preparation course'],
-      dtype='object')
-for i in categorical_cols:
-    print(df[i].unique())
-df.isnull().sum()
-sns.countplot(df['gender'])
-count_test = df['test preparation course'].value_counts()
-labels = df['test preparation course'].value_counts().index
-plt.figure(figsize= (6,6))
-plt.pie(count_test,labels=labels,autopct='%1.1f%%')
-plt.legend(labels)
-plt.show()
-df['average_score']=(df['math score']+df['reading score']+df['writing score'])/3
-df
-sns.scatterplot(x=df['average_score'],y=df['math score'],hue=df['gender'])
-sns.scatterplot(x=df['average_score'],y=df['reading score'],hue=df['gender'])
-gender = {
-    'male':1,
-    'female':0
-}
-race = {
-    'group A':0,
-    'group B':1,
-    'group C':2,
-    'group D':3,
-    'group E':4
-}
-df['gender']=df['gender'].map(gender)
-df['race/ethnicity']=df['race/ethnicity'].map(race)
-dflevel = {
-    "bachelor's degree":0,
-    'some college':1,
-    "master's degree":2,
-    "associate's degree":3,
-    "high school":4,
-    "some high school":5
-}
-df['parental level of education']=df['parental level of education'].map(level)
-dfdf = pd.get_dummies(df,drop_first=True)
-dfx = df.drop(columns='average_score').values
-y = df['average_score'].values
+import os
+from sklearn.metrics import accuracy_score
 from sklearn.model_selection import train_test_split
-x_train,x_test,y_train,y_test=train_test_split(x,y,test_size=0.25,random_state=0)
-from sklearn.ensemble import RandomForestRegressor
-model=RandomForestRegressor()
-model.fit(x_train,y_train)
-RandomForestRegressor()
-predictions=model.predict(x_test)
-predictions
-from sklearn.metrics import r2_score
-print(r2_score(predictions,y_test))
-0.9972615591014802
-pickle.dump(model,open('df.pkl','wb'))
+from sklearn import linear_model
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.neighbors import KNeighborsClassifier
+
+
+def algo_predict(input_marks):
+    x = np.array([input_marks]).reshape(1, -1)
+    root = os.path.dirname(__file__)
+    path_df = os.path.join(root, 'recons_dataset/1.csv')
+    data = pd.read_csv(path_df)
+
+     
+    train, test = train_test_split(data, test_size=0.25)
+
+    X_train = train.drop('CLASS', axis=1)
+    Y_train = train['CLASS']
+
+    X_test = test.drop('CLASS', axis=1)
+    Y_test = test['CLASS']
+    print("ddddddddddddddddddddddddddddddddd")
+    print(X_test[0:1])
+     
+    #clf = RandomForestClassifier()
+    clf = KNeighborsClassifier(n_neighbors = 1, weights='uniform', algorithm='auto')
+
+    #clf=linear_model.LogisticRegression(fit_intercept=False)
+    #clf = DecisionTreeClassifier(criterion = "entropy", random_state = 1, splitter='best')  
+    # Training the classifier
+    clf.fit(X_train, Y_train)
+
+    ypredict = clf.predict(x)
+    print("ddddddddddddddddddddddddddddddddd")
+    #print(x[0])
+    print(ypredict)
+    return ypredict
+
+def algo_predict1(input_marks):
+    x = np.array([input_marks]).reshape(1, -1)
+    root = os.path.dirname(__file__)
+    path_df = os.path.join(root, 'recons_dataset/2.csv')
+    data = pd.read_csv(path_df)
+
+     
+    train, test = train_test_split(data, test_size=0.25)
+
+    X_train = train.drop('CLASS', axis=1)
+    Y_train = train['CLASS']
+
+    X_test = test.drop('CLASS', axis=1)
+    Y_test = test['CLASS']
+    print("ddddddddddddddddddddddddddddddddd")
+    print(X_test[0:1])
+     
+    #clf = RandomForestClassifier()
+    clf = KNeighborsClassifier(n_neighbors = 1, weights='uniform', algorithm='auto')
+
+    #clf=linear_model.LogisticRegression(fit_intercept=False)
+    #clf = DecisionTreeClassifier(criterion = "entropy", random_state = 1, splitter='best')  
+    # Training the classifier
+    clf.fit(X_train, Y_train)
+
+    ypredict = clf.predict(x)
+    print("ddddddddddddddddddddddddddddddddd")
+    #print(x[0])
+    print(ypredict)
+    return ypredict
+
+def algo_predict2(input_marks):
+    x = np.array([input_marks]).reshape(1, -1)
+    root = os.path.dirname(__file__)
+    path_df = os.path.join(root, 'recons_dataset/3.csv')
+    data = pd.read_csv(path_df)
+
+     
+    train, test = train_test_split(data, test_size=0.25)
+
+    X_train = train.drop('CLASS', axis=1)
+    Y_train = train['CLASS']
+
+    X_test = test.drop('CLASS', axis=1)
+    Y_test = test['CLASS']
+    print("ddddddddddddddddddddddddddddddddd")
+    print(X_test[0:1])
+     
+    clf = KNeighborsClassifier(n_neighbors = 1, weights='uniform', algorithm='auto')
+    #clf = RandomForestClassifier()
+    #clf=linear_model.LogisticRegression(fit_intercept=False)
+    #clf = DecisionTreeClassifier(criterion = "entropy", random_state = 1, splitter='best')  
+    # Training the classifier
+    clf.fit(X_train, Y_train)
+
+    ypredict = clf.predict(x)
+    print("ddddddddddddddddddddddddddddddddd")
+    #print(x[0])
+    print(ypredict)
+    return ypredict
+def algo_predict3(input_marks):
+    x = np.array([input_marks]).reshape(1, -1)
+    root = os.path.dirname(__file__)
+    path_df = os.path.join(root, 'recons_dataset/4.csv')
+    data = pd.read_csv(path_df)
+
+     
+    train, test = train_test_split(data, test_size=0.25)
+
+    X_train = train.drop('CLASS', axis=1)
+    Y_train = train['CLASS']
+
+    X_test = test.drop('CLASS', axis=1)
+    Y_test = test['CLASS']
+    print("ddddddddddddddddddddddddddddddddd")
+    print(X_test[0:1])
+     
+    #clf = RandomForestClassifier()
+    clf = KNeighborsClassifier(n_neighbors = 1, weights='uniform', algorithm='auto')
+
+    #clf=linear_model.LogisticRegression(fit_intercept=False)
+    #clf = DecisionTreeClassifier(criterion = "entropy", random_state = 1, splitter='best')  
+    # Training the classifier
+    clf.fit(X_train, Y_train)
+
+    ypredict = clf.predict(x)
+    print("ddddddddddddddddddddddddddddddddd")
+    #print(x[0])
+    print(ypredict)
+    return ypredict
+def algo_predict4(input_marks):
+    x = np.array([input_marks]).reshape(1, -1)
+    root = os.path.dirname(__file__)
+    path_df = os.path.join(root, 'recons_dataset/5.csv')
+    data = pd.read_csv(path_df)
+
+     
+    train, test = train_test_split(data, test_size=0.25)
+
+    X_train = train.drop('CLASS', axis=1)
+    Y_train = train['CLASS']
+
+    X_test = test.drop('CLASS', axis=1)
+    Y_test = test['CLASS']
+    print("ddddddddddddddddddddddddddddddddd")
+    print(X_test[0:1])
+     
+    #clf = RandomForestClassifier()
+    clf = KNeighborsClassifier(n_neighbors = 1, weights='uniform', algorithm='auto')
+
+    #clf=linear_model.LogisticRegression(fit_intercept=False)
+    #clf = DecisionTreeClassifier(criterion = "entropy", random_state = 1, splitter='best')  
+    # Training the classifier
+    clf.fit(X_train, Y_train)
+
+    ypredict = clf.predict(x)
+    print("ddddddddddddddddddddddddddddddddd")
+    #print(x[0])
+    print(ypredict)
+    return ypredict
+
+def first_subject(input_marks):
+    predicted_val=algo_predict(input_marks)
+    return predicted_val
+
+def second_subject(input_marks):
+    predicted_val=algo_predict1(input_marks)
+    return predicted_val
+
+def third_subject(input_marks):
+    predicted_val=algo_predict2(input_marks)
+    return predicted_val
+
+def fourth_subject(input_marks):
+    predicted_val=algo_predict3(input_marks)
+    return predicted_val
+
+def fifth_subject(input_marks):
+    predicted_val=algo_predict4(input_marks)
+    return predicted_val
